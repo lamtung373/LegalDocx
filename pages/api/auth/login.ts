@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { serialize } from 'cookie';
 import { executeQuery } from '@/lib/db';
 import { verifyPassword, createToken, handleApiError } from '@/lib/utils';
 import type { DbUser } from '@/lib/db';
@@ -63,16 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       [sessionId, user.id, expiresAt]
     );
 
-    // Set HTTP-only cookie
-    const cookie = serialize('auth-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60, // 24 hours
-      path: '/',
-    });
-
-    res.setHeader('Set-Cookie', cookie);
+    // Set HTTP-only cookie using res.setHeader
+    res.setHeader('Set-Cookie', `auth-token=${token}; HttpOnly; Path=/; Max-Age=${24 * 60 * 60}; SameSite=Strict${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
 
     // Return user data (without password)
     const { password_hash, ...userData } = user;
@@ -81,34 +72,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: 'Đăng nhập thành công',
       user: userData,
     });
-
-  } catch (error) {
-    const { message, status } = handleApiError(error);
-    res.status(status).json({ message });
-  }
-}
-
-// API endpoint for logout
-export async function logoutHandler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
-  try {
-    // Clear cookie
-    const cookie = serialize('auth-token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 0,
-      path: '/',
-    });
-
-    res.setHeader('Set-Cookie', cookie);
-
-    // TODO: Remove session from database if we stored it
-    
-    res.status(200).json({ message: 'Đăng xuất thành công' });
 
   } catch (error) {
     const { message, status } = handleApiError(error);
