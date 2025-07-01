@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save, User, Building } from 'lucide-react'
+import DateInput from '@/components/DateInput'
 
 interface FormData {
   type: 'individual' | 'organization'
@@ -115,8 +116,10 @@ export default function NewPartyPage() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Loại đương sự</h2>
             <div className="grid grid-cols-2 gap-4">
-              <label className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer ${
-                formData.type === 'individual' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+              <label className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                formData.type === 'individual' 
+                  ? 'border-blue-500 bg-blue-50 text-blue-900' 
+                  : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
               }`}>
                 <input
                   type="radio"
@@ -126,12 +129,14 @@ export default function NewPartyPage() {
                   onChange={handleChange}
                   className="sr-only"
                 />
-                <User className="h-6 w-6 text-blue-600 mr-3" />
+                <User className={`h-6 w-6 mr-3 ${formData.type === 'individual' ? 'text-blue-600' : 'text-gray-500'}`} />
                 <span className="font-medium">Cá nhân</span>
               </label>
               
-              <label className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer ${
-                formData.type === 'organization' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+              <label className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                formData.type === 'organization' 
+                  ? 'border-blue-500 bg-blue-50 text-blue-900' 
+                  : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
               }`}>
                 <input
                   type="radio"
@@ -141,7 +146,7 @@ export default function NewPartyPage() {
                   onChange={handleChange}
                   className="sr-only"
                 />
-                <Building className="h-6 w-6 text-blue-600 mr-3" />
+                <Building className={`h-6 w-6 mr-3 ${formData.type === 'organization' ? 'text-blue-600' : 'text-gray-500'}`} />
                 <span className="font-medium">Tổ chức</span>
               </label>
             </div>
@@ -161,7 +166,7 @@ export default function NewPartyPage() {
                   value={formData.fullName}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder={isIndividual ? "Nhập họ và tên" : "Nhập tên tổ chức"}
                 />
               </div>
@@ -176,7 +181,7 @@ export default function NewPartyPage() {
                     name="citizenId"
                     value={formData.citizenId}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập số CMND/CCCD"
                   />
                 </div>
@@ -190,7 +195,7 @@ export default function NewPartyPage() {
                     name="taxCode"
                     value={formData.taxCode}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập mã số thuế"
                   />
                 </div>
@@ -205,7 +210,7 @@ export default function NewPartyPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder="Nhập số điện thoại"
                 />
               </div>
@@ -219,7 +224,7 @@ export default function NewPartyPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder="Nhập địa chỉ email"
                 />
               </div>
@@ -233,7 +238,7 @@ export default function NewPartyPage() {
                   value={formData.address}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder="Nhập địa chỉ đầy đủ"
                 />
               </div>
@@ -249,12 +254,11 @@ export default function NewPartyPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Ngày sinh
                   </label>
-                  <input
-                    type="date"
+                  <DateInput
                     name="birthDate"
                     value={formData.birthDate}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="dd/mm/yyyy (ví dụ: 12112002)"
                   />
                 </div>
 
@@ -267,7 +271,7 @@ export default function NewPartyPage() {
                     name="birthPlace"
                     value={formData.birthPlace}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập nơi sinh"
                   />
                 </div>
@@ -280,12 +284,12 @@ export default function NewPartyPage() {
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   >
-                    <option value="">Chọn giới tính</option>
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="other">Khác</option>
+                    <option value="" className="text-gray-500">Chọn giới tính</option>
+                    <option value="male" className="text-gray-900">Nam</option>
+                    <option value="female" className="text-gray-900">Nữ</option>
+                    <option value="other" className="text-gray-900">Khác</option>
                   </select>
                 </div>
 
@@ -298,7 +302,7 @@ export default function NewPartyPage() {
                     name="nationality"
                     value={formData.nationality}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập quốc tịch"
                   />
                 </div>
@@ -312,7 +316,7 @@ export default function NewPartyPage() {
                     name="occupation"
                     value={formData.occupation}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập nghề nghiệp"
                   />
                 </div>
@@ -334,7 +338,7 @@ export default function NewPartyPage() {
                     name="representativeName"
                     value={formData.representativeName}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập tên người đại diện"
                   />
                 </div>
@@ -348,7 +352,7 @@ export default function NewPartyPage() {
                     name="representativePosition"
                     value={formData.representativePosition}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Nhập chức vụ"
                   />
                 </div>
@@ -369,7 +373,7 @@ export default function NewPartyPage() {
                   name="bankAccount"
                   value={formData.bankAccount}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder="Nhập số tài khoản"
                 />
               </div>
@@ -383,7 +387,7 @@ export default function NewPartyPage() {
                   name="bankName"
                   value={formData.bankName}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   placeholder="Nhập tên ngân hàng"
                 />
               </div>
@@ -398,7 +402,7 @@ export default function NewPartyPage() {
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
               placeholder="Nhập ghi chú bổ sung..."
             />
           </div>
@@ -407,14 +411,14 @@ export default function NewPartyPage() {
           <div className="flex justify-end space-x-4">
             <Link
               href="/parties"
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              className="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-colors"
             >
               Hủy
             </Link>
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-2 rounded-lg flex items-center space-x-2"
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors"
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
