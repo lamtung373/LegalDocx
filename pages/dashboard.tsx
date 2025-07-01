@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import MainLayout from '@/components/Layout/MainLayout';
 import { Card, Button, Badge, LoadingSpinner } from '@/components/UI';
-import { withPageAuth } from '@/lib/middleware';
+import { withPageAuth } from '@/lib/auth-hooks';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 interface DashboardStats {
