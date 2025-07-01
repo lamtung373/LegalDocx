@@ -84,14 +84,14 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 // Hàm tạo JWT token
 export function createToken(payload: any, expiresIn: string = '24h'): string {
   const secret = process.env.JWT_SECRET || 'your-super-secret-key';
-  return jwt.sign(payload, secret, { expiresIn });
+  return jwt.sign(payload, secret, { expiresIn } as jwt.SignOptions);
 }
 
 // Hàm verify JWT token
 export function verifyToken(token: string): any {
   try {
     const secret = process.env.JWT_SECRET || 'your-super-secret-key';
-    return jwt.verify(token, secret);
+    return jwt.verify(token, secret) as any;
   } catch (error) {
     return null;
   }
