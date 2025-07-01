@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 interface DateInputProps {
   name: string
   value: string
-  onChange: (e: { target: { name: string; value: string } }) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   className?: string
   required?: boolean
@@ -78,14 +78,20 @@ export default function DateInput({
     const formatted = formatDateInput(inputValue)
     setDisplayValue(formatted)
     
-    // Convert to ISO format for backend
+    // Convert to ISO format for backend and call parent onChange
     const isoDate = convertToISODate(formatted)
-    onChange({
+    
+    // Create a synthetic event compatible with the original handler
+    const syntheticEvent = {
+      ...e,
       target: {
+        ...e.target,
         name,
         value: isoDate
       }
-    })
+    } as React.ChangeEvent<HTMLInputElement>
+    
+    onChange(syntheticEvent)
   }
 
   return (
