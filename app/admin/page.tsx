@@ -129,7 +129,7 @@ export default function AdminPage() {
             <button
               onClick={handleSeedDatabase}
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium"
             >
               <Database className="h-5 w-5" />
               <span>Tạo dữ liệu mẫu</span>
@@ -137,7 +137,7 @@ export default function AdminPage() {
             
             <Link
               href="/admin/templates"
-              className="bg-green-600 hover:bg-green-700 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+              className="bg-green-600 hover:bg-green-700 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium"
             >
               <Plus className="h-5 w-5" />
               <span>Quản lý mẫu HĐ</span>
@@ -145,7 +145,7 @@ export default function AdminPage() {
             
             <Link
               href="/admin/categories"
-              className="bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+              className="bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium"
             >
               <Settings className="h-5 w-5" />
               <span>Quản lý danh mục</span>
