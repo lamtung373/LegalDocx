@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    appDir: false, // Sử dụng pages directory
-  },
   
   // Environment variables
   env: {
@@ -27,9 +24,6 @@ const nextConfig = {
     return config;
   },
 
-  // Optimized for Vercel deployment
-  output: 'standalone',
-  
   // Images configuration
   images: {
     domains: [],
