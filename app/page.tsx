@@ -1,7 +1,22 @@
 import Link from 'next/link'
 import { FileText, Users, Building, Settings } from 'lucide-react'
+import { prisma } from '@/lib/db'
 
-export default function HomePage() {
+async function getSystemStats() {
+  try {
+    const [contractCount, partyCount, assetCount] = await Promise.all([
+      prisma.contract.count(),
+      prisma.party.count(),
+      prisma.asset.count()
+    ])
+    return { contractCount, partyCount, assetCount }
+  } catch {
+    return { contractCount: 0, partyCount: 0, assetCount: 0 }
+  }
+}
+
+export default async function HomePage() {
+  const stats = await getSystemStats()
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
@@ -122,15 +137,15 @@ export default function HomePage() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">0</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.contractCount}</div>
               <div className="text-sm text-gray-600">Hợp đồng đã tạo</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">0</div>
+              <div className="text-2xl font-bold text-green-600">{stats.partyCount}</div>
               <div className="text-sm text-gray-600">Đương sự</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">0</div>
+              <div className="text-2xl font-bold text-purple-600">{stats.assetCount}</div>
               <div className="text-sm text-gray-600">Tài sản</div>
             </div>
           </div>
