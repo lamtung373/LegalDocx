@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save, User, Building } from 'lucide-react'
-import DateInput from '@/components/DateInput'
+import DateInput from '../../../components/DateInput'
 
 interface FormData {
   type: 'individual' | 'organization'
@@ -253,6 +253,7 @@ export default function NewPartyPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Ngày sinh
+                    <span className="text-xs text-gray-500 ml-2">(Nhập liền: 12112002 → 12/11/2002)</span>
                   </label>
                   <DateInput
                     name="birthDate"
