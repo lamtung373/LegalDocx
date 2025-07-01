@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { serialize } from 'cookie';
 import { executeQuery } from '@/lib/db';
 import { verifyToken, handleApiError } from '@/lib/utils';
 
@@ -22,16 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Clear cookie
-    const cookie = serialize('auth-token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 0,
-      path: '/',
-    });
-
-    res.setHeader('Set-Cookie', cookie);
+    // Clear cookie using res.setHeader
+    res.setHeader('Set-Cookie', `auth-token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
     
     res.status(200).json({ message: 'Đăng xuất thành công' });
 
