@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save, User, Building } from 'lucide-react'
-import DateInput from '../../components/DateInput'
+import DateInput from '../../../components/DateInput'
 
 interface FormData {
   type: 'individual' | 'organization'
