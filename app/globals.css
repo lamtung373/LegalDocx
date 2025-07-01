@@ -48,3 +48,34 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400;
 }
+
+/* Ensure good contrast for form elements */
+@layer base {
+  input, textarea, select {
+    @apply bg-white text-gray-900;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    @apply text-gray-500;
+  }
+  
+  select option {
+    @apply bg-white text-gray-900;
+  }
+  
+  /* Fix button text visibility */
+  button {
+    @apply font-medium;
+  }
+  
+  /* Ensure disabled states are visible */
+  button:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+  
+  /* Radio and checkbox improvements */
+  input[type="radio"]:checked + label,
+  input[type="checkbox"]:checked + label {
+    @apply text-blue-900;
+  }
+}
