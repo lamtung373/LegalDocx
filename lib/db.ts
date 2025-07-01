@@ -9,8 +9,6 @@ const dbConfig = {
   database: process.env.DB_NAME || 'notary_system',
   charset: 'utf8mb4',
   timezone: '+07:00',
-  acquireTimeout: 60000,
-  timeout: 60000,
 };
 
 // Tạo connection pool để tối ưu hiệu suất
@@ -19,8 +17,6 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  acquireTimeout: 60000,
-  timeout: 60000,
 });
 
 // Hàm thực hiện query với error handling
