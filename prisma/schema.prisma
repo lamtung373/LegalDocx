@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  records   Record[]
+}
+
+model ContractTemplate {
+  id        Int        @id @default(autoincrement())
+  name      String
+  category  String?
+  content   String     @db.Text
+  variables Json?
+  createdAt DateTime   @default(now())
+  contracts Contract[]
+}
+
+model Party {
+  id           Int            @id @default(autoincrement())
+  name         String
+  idNumber     String?        @map("id_number")
+  birthDate    DateTime?      @map("birth_date")
+  address      String?        @db.Text
+  phone        String?
+  email        String?
+  createdAt    DateTime       @default(now())
+  recordParties RecordParty[]
+}
+
+model Asset {
+  id           Int           @id @default(autoincrement())
+  type         String?
+  description  String?       @db.Text
+  location     String?       @db.Text
+  value        Decimal?      @db.Decimal(15, 2)
+  details      Json?
+  createdAt    DateTime      @default(now())
+  recordAssets RecordAsset[]
+}
+
+model Record {
+  id            Int            @id @default(autoincrement())
+  recordNumber  String         @unique @map("record_number")
+  contractType  String?        @map("contract_type")
+  status        String?
+  createdBy     Int            @map("created_by")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [createdBy], references: [id])
+  contracts     Contract[]
+  recordParties RecordParty[]
+  recordAssets  RecordAsset[]
+}
+
+model Contract {
+  id           Int               @id @default(autoincrement())
+  recordId     Int               @map("record_id")
+  templateId   Int?              @map("template_id")
+  content      String            @db.Text
+  signedDate   DateTime?         @map("signed_date")
+  notaryDate   DateTime?         @map("notary_date")
+  notaryBook   String?           @map("notary_book")
+  notaryNumber String?           @map("notary_number")
+  fee          Decimal?          @db.Decimal(10, 2)
+  record       Record            @relation(fields: [recordId], references: [id])
+  template     ContractTemplate? @relation(fields: [templateId], references: [id])
+}
+
+model RecordParty {
+  recordId Int    @map("record_id")
+  partyId  Int    @map("party_id")
+  role     String?
+  record   Record @relation(fields: [recordId], references: [id])
+  party    Party  @relation(fields: [partyId], references: [id])
+
+  @@id([recordId, partyId])
+}
+
+model RecordAsset {
+  recordId Int    @map("record_id")
+  assetId  Int    @map("asset_id")
+  record   Record @relation(fields: [recordId], references: [id])
+  asset    Asset  @relation(fields: [assetId], references: [id])
+
+  @@id([recordId, assetId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
