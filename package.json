@@ -23,7 +23,7 @@
     "@tanstack/react-table": "^8.11.8",
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.3.1",
-    "lucide-react": "^0.321.0",
+    "lucide-react": "^0.525.0",
     "mysql2": "^3.9.1",
     "next": "14.1.0",
     "next-auth": "^4.24.5",
