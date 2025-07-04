@@ -1,103 +1,159 @@
-import Image from "next/image";
+export const dynamic = 'force-dynamic'
 
-export default function Home() {
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { FileText, Users, Building, FolderOpen, TrendingUp, Clock } from 'lucide-react'
+import Link from 'next/link'
+
+// Mock data - sau này sẽ lấy từ database
+const stats = [
+  { name: 'Tổng hồ sơ', value: '1,234', icon: FolderOpen, color: 'bg-blue-500' },
+  { name: 'Đương sự', value: '456', icon: Users, color: 'bg-green-500' },
+  { name: 'Tài sản', value: '789', icon: Building, color: 'bg-purple-500' },
+  { name: 'Hợp đồng tháng này', value: '123', icon: FileText, color: 'bg-yellow-500' },
+]
+
+const recentRecords = [
+  { id: 1, number: 'HS-2025-001', type: 'Mua bán nhà đất', client: 'Nguyễn Văn A', date: '2025-01-04', status: 'Hoàn thành' },
+  { id: 2, number: 'HS-2025-002', type: 'Ủy quyền', client: 'Trần Thị B', date: '2025-01-04', status: 'Đang xử lý' },
+  { id: 3, number: 'HS-2025-003', type: 'Di chúc', client: 'Lê Văn C', date: '2025-01-03', status: 'Chờ ký' },
+]
+
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions)
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div>
+      {/* Page header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-gray-900">
+          Xin chào, {session?.user?.name}!
+        </h1>
+        <p className="text-gray-600 mt-1">
+          Đây là tổng quan về hoạt động của văn phòng công chứng
+        </p>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Stats */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        {stats.map((stat) => (
+          <div key={stat.name} className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="p-5">
+              <div className="flex items-center">
+                <div className={`flex-shrink-0 ${stat.color} rounded-md p-3`}>
+                  <stat.icon className="h-6 w-6 text-white" />
+                </div>
+                <div className="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt className="text-sm font-medium text-gray-500 truncate">
+                      {stat.name}
+                    </dt>
+                    <dd className="text-2xl font-semibold text-gray-900">
+                      {stat.value}
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick actions */}
+      <div className="bg-white shadow rounded-lg mb-8">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-medium text-gray-900">Thao tác nhanh</h2>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="p-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Link
+              href="/contracts/new"
+              className="flex items-center justify-center px-4 py-3 border border-primary-600 text-primary-600 rounded-md hover:bg-primary-50 transition-colors"
+            >
+              <FileText className="h-5 w-5 mr-2" />
+              Soạn hợp đồng mới
+            </Link>
+            <Link
+              href="/parties/new"
+              className="flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              <Users className="h-5 w-5 mr-2" />
+              Thêm đương sự
+            </Link>
+            <Link
+              href="/assets/new"
+              className="flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              <Building className="h-5 w-5 mr-2" />
+              Thêm tài sản
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent records */}
+      <div className="bg-white shadow rounded-lg">
+        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-lg font-medium text-gray-900">Hồ sơ gần đây</h2>
+          <Link href="/records" className="text-sm text-primary-600 hover:text-primary-700">
+            Xem tất cả
+          </Link>
+        </div>
+        <div className="overflow-hidden">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Số hồ sơ
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Loại hợp đồng
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Đương sự
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ngày tạo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Trạng thái
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {recentRecords.map((record) => (
+                <tr key={record.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600">
+                    <Link href={`/records/${record.id}`}>
+                      {record.number}
+                    </Link>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {record.type}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {record.client}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {record.date}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      record.status === 'Hoàn thành' 
+                        ? 'bg-green-100 text-green-800'
+                        : record.status === 'Đang xử lý'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {record.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
